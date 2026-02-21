@@ -1,19 +1,12 @@
 const express = require('express');
-const app = express();
 const helmet = require('helmet');
+const app = express();
+
+app.use(helmet());
 
 
 
-
-
-app.use(helmet.hidePoweredBy());
-
-
-
-
-
-
-
+// app.use(helmet.hidePoweredBy());
 
 
 
@@ -46,6 +39,16 @@ app.use(helmet.hidePoweredBy());
 
 
 
+
+
+
+
+
+
+app.use((req, res, next) => {
+  res.setHeader('X-Powered-By', 'PHP 7.4.3'); // Un pequeño "engaño"
+  next();
+});
 
 app.get("/", function (request, response) {
   response.send("Hello World - Helmet Activo");
