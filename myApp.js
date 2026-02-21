@@ -42,21 +42,15 @@ app.use(helmet.hidePoweredBy());
 
 
 
-app.use((req, res, next) => {
-  res.setHeader('X-Powered-By', 'PHP 7.4.3'); // Un pequeño "engaño"
-  next();
-});
-
-app.get("/", function (request, response) {
-  response.send("Hello World - Helmet Activo");
-});
-
-// Ruta que FCC usa para auditar tu código
-app.get("/_api/app-info", function(req, res) {
-  res.json({
-    headers: res.getHeaders(),
-    appStack: app._router.stack.map(layer => layer.name)
-  });
-});
-
 module.exports = app;
+const api = require('./server.js');
+app.use(express.static('public'));
+app.disable('strict-transport-security');
+app.use('/_api', api);
+app.get("/", function (request, response) {
+  response.sendFile(__dirname + '/views/index.html');
+});
+let port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Your app is listening on port ${port}`);
+});
