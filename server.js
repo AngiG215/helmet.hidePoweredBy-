@@ -65,6 +65,11 @@ app.use(function (req, res, next) {
   res.status(404).type("txt").send("Not Found");
 });
 
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log('Your app is listening on port ' + port);
+});
+
 module.exports = app;
 
 /********************************************
