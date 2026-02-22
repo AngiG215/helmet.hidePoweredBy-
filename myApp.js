@@ -5,4 +5,6 @@ const app = express();
 // ESTA ES LA ÚNICA LÍNEA QUE REALMENTE IMPORTA PARA EL RETO
 app.use(helmet.hidePoweredBy()); 
 
+app.use(helmet.frameguard({ action: 'deny' }));
+
 module.exports = app;
