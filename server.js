@@ -1,9 +1,11 @@
+const myApp = require('./myApp'); // Importamos tu app con Helmet
 const express = require('express');
-const app = express();
 const path = require('path');
-const myApp = require('./myApp'); // Tu archivo de lógica
 
-// 1. Esto permite que FreeCodeCamp lea tu sitio desde su web
+// Usamos la app que viene de myApp.js
+const app = myApp; 
+
+// 1. CORS para que FCC pueda entrar
 app.use((req, res, next) => {
   res.set({
     'Access-Control-Allow-Origin': '*',
@@ -12,24 +14,22 @@ app.use((req, res, next) => {
   next();
 });
 
-// 2. Conectamos con tus desafíos de seguridad
-app.use('/', myApp);
-
-// 3. RUTA CRÍTICA: Sin esto FCC NO te aprobará
+// 2. Ruta para que el test de FCC vea los headers
 app.get("/_api/app-info", (req, res) => {
-  const hs = res.getHeaders();
   res.json({
-    headers: hs,
+    headers: res.getHeaders(),
     appStack: app._router.stack.map(layer => layer.name)
   });
 });
 
-// 4. Servir el HTML principal
+// 3. Página principal
+app.use(express.static('public'));
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'index.html'));
 });
 
+// 4. Puerto para Render
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
-  console.log(`Ready on port ${port}`);
+  console.log('Servidor activo y protegido');
 });
