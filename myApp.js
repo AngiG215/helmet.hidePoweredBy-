@@ -2,15 +2,15 @@ const express = require('express');
 const helmet = require('helmet');
 const app = express();
 
-// 1. Desafío de Seguridad: Ocultar que usamos Express
+// 1. Usa helmet para ocultar X-Powered-By
 app.use(helmet.hidePoweredBy());
 
-// 2. Configuración básica de rutas y archivos estáticos
+// 2. Configura los archivos estáticos y la ruta de inicio
 app.use(express.static('public'));
 
 app.get("/", function (request, response) {
   response.sendFile(__dirname + '/views/index.html');
 });
 
-// 3. Exportar la aplicación para que server.js la use
+// 3. EXPORTAR APP - Esto es lo único que debe ir al final
 module.exports = app;
